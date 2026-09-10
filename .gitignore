@@ -1,0 +1,7 @@
+# 插件缓存/会话目录（不应进仓库）
+.mimosa/
+.v2c/
+.video_agent/
+out/
+node_modules/
+.DS_Store

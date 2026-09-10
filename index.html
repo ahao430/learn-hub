@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学习馆 · 数学专题学习架</title>
+<meta name="description" content="数学专题学习架：每个专题一个格子，讲义、动画、练习装在一起。已上架：同余定理。">
+<link rel="stylesheet" href="css/hub.css">
+</head>
+<body>
+
+<nav class="hubnav">
+  <a class="brand" href="index.html"><span class="logo">📚</span> 学习馆</a>
+  <span class="tagline">数学 · 专题学习架</span>
+</nav>
+
+<header class="hubhero">
+  <div class="hero-inner">
+    <div class="hero-badge">把每个学习专题，放进一个格子</div>
+    <h1>数学学习馆</h1>
+    <p class="hero-sub">
+      每个专题都是一套独立的小站：讲义、可视化动画、分级练习打包装在一起；
+      学完一个，回到这里取下一个。架子会一直往上加格子。
+    </p>
+    <div class="hubstats" id="hubstats"></div>
+  </div>
+</header>
+
+<main class="hubmain">
+
+  <!-- ═══ 专题书架 ═══ -->
+  <section>
+    <div class="sec-head">
+      <h2>专题书架</h2>
+      <span class="sec-note">点击卡片进入专题</span>
+    </div>
+    <div class="shelf" id="shelf"></div>
+  </section>
+
+  <!-- ═══ 规划中 ═══ -->
+  <section>
+    <div class="sec-head">
+      <h2>规划中的格子</h2>
+      <span class="sec-note">占位等待上架</span>
+    </div>
+    <div class="shelf planned-shelf" id="planned"></div>
+  </section>
+
+  <!-- ═══ 上架指南 ═══ -->
+  <section class="howto">
+    <div class="sec-head">
+      <h2>怎么上架一个新专题？</h2>
+    </div>
+    <div class="howto-steps">
+      <div class="howto-step">
+        <b>① 建目录</b>
+        <p>在 <code>topics/</code> 下新建一个文件夹，例如 <code>topics/mechanics/</code>，里面放 <code>index.html</code>、<code>css/</code>、<code>js/</code>——和同余专题一模一样的三件套结构。</p>
+      </div>
+      <div class="howto-step">
+        <b>② 引共享层</b>
+        <p>专题的 <code>index.html</code> 只需 <code>&lt;link href="../_shared/topic.css"&gt;</code> 和 <code>&lt;script src="../_shared/topic.js"&gt;</code>，即可获得导航注入、定理框、可视化壳、题目卡等全部通用组件。专题特有样式写在 <code>css/style.css</code> 里追加。</p>
+      </div>
+      <div class="howto-step">
+        <b>③ 写内容</b>
+        <p>在专题的 <code>js/</code> 里用 <code>TOPIC.TopicNav()</code>、<code>TOPIC.hero()</code>、<code>TOPIC.chapter()</code>、<code>TOPIC.theorem()</code>、<code>TOPIC.viz()</code> 等函数组装内容，Canvas 动画引用 <code>TOPIC.VE</code> 工具。参照 <code>topics/congruence/js/congruence.js</code>。</p>
+      </div>
+      <div class="howto-step">
+        <b>④ 登记上架</b>
+        <p>打开 <code>js/hub.js</code>，在 <code>TOPICS</code> 数组里加一条记录（标题、描述、路径、标签），主页卡片和统计数字就会自动更新。</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="hubfoot">
+  <p>学习馆 · 纯 HTML / CSS / JavaScript，无任何外部依赖</p>
+  <p class="quote">"学习数学的唯一方法是做数学。" —— 哈尔莫斯</p>
+</footer>
+
+<script src="js/hub.js"></script>
+</body>
+</html>
