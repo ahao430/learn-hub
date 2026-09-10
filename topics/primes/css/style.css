@@ -1,0 +1,53 @@
+/* ═══════════ primes/css/style.css · 质数专题特有样式 ═══════════ */
+
+/* ───────── 筛法网格 ───────── */
+.sieve-grid {
+  display: grid; grid-template-columns: repeat(10, 1fr); gap: 5px;
+  max-width: 560px; margin: 0 auto;
+}
+.sg-cell {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; font-size: 13px; font-weight: 600;
+  background: #f1f5f9; color: #94a3b8;
+  transition: all .35s; border: 1.5px solid transparent;
+}
+.sg-cell.one { background: #f8fafc; color: #cbd5e1; text-decoration: line-through; }
+.sg-cell.out {
+  background: #f8fafc; color: #cbd5e1;
+  text-decoration: line-through; text-decoration-color: #f87171; text-decoration-thickness: 2px;
+  transform: scale(.94);
+}
+.sg-cell.prime {
+  background: #0d9488; color: #fff; transform: scale(1.06);
+  box-shadow: 0 3px 10px rgba(13,148,136,.35);
+}
+.sieve-narr {
+  margin-top: 12px; min-height: 46px; font-size: 14.5px; color: #134e4a;
+  background: #f0fdfa; border: 1px dashed #99f6e4; border-radius: 10px; padding: 10px 16px;
+}
+
+/* ───────── 质数检测日志 ───────── */
+.test-log {
+  max-height: 240px; overflow-y: auto;
+  background: #f8fafc; border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 14px; display: grid; gap: 4px;
+}
+.tl-row {
+  font-family: Georgia, serif; font-size: 14px; color: #475569;
+  border-left: 3px solid #cbd5e1; padding: 2px 10px; border-radius: 4px;
+  animation: fadein .4s;
+}
+.tl-row.dim { color: #94a3b8; }
+.tl-row.hit { color: #b91c1c; border-left-color: #ef4444; background: #fef2f2; font-weight: 700; }
+.tl-row.miss { color: #64748b; }
+.tl-row.done { color: #0f766e; border-left-color: #0d9488; background: #f0fdfa; font-weight: 700; }
+
+/* ───────── 检测结论（复用弃九法结论条样式名） ───────── */
+.nl-result {
+  font-family: Georgia, serif; font-size: 19px; text-align: center; padding: 10px;
+  border-radius: 12px; margin-top: 10px; opacity: 0; transition: opacity .5s;
+}
+.nl-result.on { opacity: 1; }
+.nl-result.ok { background: #f0fdf4; border: 2px solid #86efac; color: #15803d; }
+.nl-result.bad { background: #fef2f2; border: 2px solid #fca5a5; color: #b91c1c; }
+.dim { color: #94a3b8; }

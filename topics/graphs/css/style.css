@@ -1,0 +1,8 @@
+/* ═══════════ graphs/css/style.css · 图论入门特有样式 ═══════════ */
+
+.sieve-narr {
+  margin-top: 12px; min-height: 52px; font-size: 14.5px; color: #831843;
+  background: #fdf2f8; border: 1px dashed #f9a8d4; border-radius: 10px; padding: 10px 16px;
+  line-height: 1.8;
+}
+#labCanvas, #euCanvas { cursor: pointer; }

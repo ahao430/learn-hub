@@ -1,9 +1,5 @@
-/* ═══════════ quiz.js · 分级题库 + 即时判分 ═══════════ */
+/* ═══════════ quiz.js · 同余定理题库（渲染交给 TOPIC.renderQuiz） ═══════════ */
 (function () {
-  const $ = id => document.getElementById(id);
-  const listEl = $('quizList');
-  if (!listEl) return;
-
   const QS = [
     /* ————— 入门 ————— */
     { lv: 'basic', type: 'choice',
@@ -82,98 +78,12 @@
       ex: '设 x = 3 + 4s。代入第二式：3 + 4s ≡ 2 (mod 3) ⇒ s ≡ 2 (mod 3)，取 s = 2 得 x = 11 + 12t。代入第三式：11 + 12t ≡ 1 (mod 5) ⇒ 12t ≡ −10 ≡ 0 (mod 5) ⇒ t ≡ 0 (mod 5)。最小正解 <b>11</b>（验证：11 mod 4 = 3 ✓，11 mod 3 = 2 ✓，11 mod 5 = 1 ✓）。' }
   ];
 
-  const answered = new Map();   // qIndex -> bool（是否答对）
-  let curLv = 'basic';
-
-  function esc(s) { return s; }   // 题面允许受控 HTML（<sup> 等）
-
-  function progress() {
-    const done = answered.size, right = [...answered.values()].filter(Boolean).length;
-    $('quizCount').textContent = `已答 ${done} / ${QS.length}`;
-    $('quizScore').textContent = `✓ ${right}`;
-    $('quizBarFill').style.width = (done / QS.length * 100) + '%';
-    $('quizDone').style.display = done === QS.length ? '' : 'none';
-  }
-
-  function render() {
-    listEl.innerHTML = '';
-    QS.forEach((q, qi) => {
-      if (q.lv !== curLv) return;
-      const card = document.createElement('div');
-      card.className = 'qcard';
-      const no = document.createElement('div');
-      no.className = 'qhead';
-      no.innerHTML = `<span class="qno">Q${qi + 1}</span><span class="qtag">${q.type === 'choice' ? '选择题' : '填空题'}</span>`;
-      card.appendChild(no);
-
-      const qt = document.createElement('div');
-      qt.className = 'qtext';
-      qt.innerHTML = esc(q.q);
-      card.appendChild(qt);
-
-      const ex = document.createElement('div');
-      ex.className = 'qexplain';
-
-      if (q.type === 'choice') {
-        const box = document.createElement('div');
-        box.className = 'qopts';
-        const OL = 'ABCD';
-        q.opts.forEach((op, oi) => {
-          const b = document.createElement('button');
-          b.className = 'qopt';
-          b.innerHTML = `<span class="ol">${OL[oi]}</span><span>${op}</span>`;
-          b.addEventListener('click', () => {
-            if (answered.has(qi)) return;
-            const right = oi === q.ans;
-            answered.set(qi, right);
-            box.querySelectorAll('.qopt').forEach((bb, bj) => {
-              bb.disabled = true;
-              if (bj === q.ans) bb.classList.add('right');
-              else if (bj === oi) bb.classList.add('wrong');
-            });
-            ex.innerHTML = `<span class="verdict ${right ? 'ok' : 'no'}">${right ? '✓ 回答正确' : '✗ 回答错误'}</span>${q.ex}`;
-            ex.classList.add('show');
-            progress();
-          });
-          box.appendChild(b);
-        });
-        card.appendChild(box);
-      } else {
-        const box = document.createElement('div');
-        box.className = 'qfill';
-        const input = document.createElement('input');
-        input.type = 'number'; input.placeholder = '填入答案';
-        const btn = document.createElement('button');
-        btn.className = 'btn primary'; btn.textContent = '提交';
-        const judge = () => {
-          if (answered.has(qi)) return;
-          const v = input.value.trim();
-          if (v === '') { input.focus(); return; }
-          const right = Number(v) === Number(q.ans);
-          answered.set(qi, right);
-          input.disabled = true; btn.disabled = true;
-          input.style.borderColor = right ? '#16a34a' : '#f87171';
-          ex.innerHTML = `<span class="verdict ${right ? 'ok' : 'no'}">${right ? '✓ 回答正确' : '✗ 正确答案：' + q.ans}</span>${q.ex}`;
-          ex.classList.add('show');
-          progress();
-        };
-        btn.addEventListener('click', judge);
-        input.addEventListener('keydown', e => { if (e.key === 'Enter') judge(); });
-        box.appendChild(input); box.appendChild(btn);
-        card.appendChild(box);
-      }
-
-      card.appendChild(ex);
-      listEl.appendChild(card);
-    });
-    progress();
-  }
-
-  document.querySelectorAll('#quizTabs button').forEach(b => b.addEventListener('click', () => {
-    document.querySelectorAll('#quizTabs button').forEach(x => x.classList.toggle('on', x === b));
-    curLv = b.dataset.level;
-    render();
-  }));
-
-  render();
+  TOPIC.renderQuiz('quizMount', QS, {
+    tabs: [
+      { level: 'basic', label: '🌱 入门 · 6 题' },
+      { level: 'mid', label: '🚀 进阶 · 6 题' },
+      { level: 'adv', label: '🔥 挑战 · 4 题' }
+    ],
+    done: '<b>🎉 全部完成！</b>你已走完从时钟到中国剩余定理的旅程。想继续深入，可以了解：欧拉定理与 φ 函数、二次剩余、模逆元与扩展欧几里得算法。'
+  });
 })();

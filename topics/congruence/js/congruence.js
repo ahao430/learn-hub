@@ -6,7 +6,7 @@
    ═══════════════════════════════════════════════ */
 (function () {
   const { el, $, TopicNav, hero, chapter, theorem, triview, examples,
-    propRow, cycleStrip, stepList, ancient, keypoint, appGrid, viz, quizShell, footer, initChrome } = TOPIC;
+    propRow, cycleStrip, stepList, ancient, keypoint, appGrid, viz, footer, initChrome } = TOPIC;
 
   /* ---------- 导航 ---------- */
   TopicNav({
@@ -292,17 +292,8 @@
   const ch7 = chapter({ id: 'ch-quiz', no: '练习场', title: '过关斩将 · 分级练习', accent: '#16a34a', accentSoft: '#f0fdf4' });
   ch7.classList.add('chapter-quiz');
   ch7.appendChild(el('p', null, '共 16 题，分三级难度。选择题点击选项即判分；填空题输入答案后点"提交"。每题都配详细解析——做错也不要紧，看懂解析再回头做动画。'));
-  ch7.appendChild(quizShell({
-    total: 16,
-    tabs: [
-      { level: 'basic', label: '🌱 入门 · 6 题' },
-      { level: 'mid', label: '🚀 进阶 · 6 题' },
-      { level: 'adv', label: '🔥 挑战 · 4 题' }
-    ]
-  }));
-  const done = el('div', 'keypoint', '<b>🎉 全部完成！</b>你已走完从时钟到中国剩余定理的旅程。想继续深入，可以了解：欧拉定理与 φ 函数、二次剩余、模逆元与扩展欧几里得算法。');
-  done.id = 'quizDone'; done.style.display = 'none';
-  ch7.appendChild(done);
+  ch7.appendChild(el('div', null, ''));
+  ch7.lastChild.id = 'quizMount';
   $('topicMain').appendChild(ch7);
 
   /* ---------- 页脚 ---------- */

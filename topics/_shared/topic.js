@@ -5,7 +5,7 @@
      · TopicNav(config)  —— 注入顶部导航
      · 组件函数：hero / chapter / theorem / examples / triview /
        propRow / keypoint / ancient / appGrid / stepList / cycleStrip /
-       viz / quizShell —— 从 JS 生成 DOM，省掉重复 HTML
+       viz / renderQuiz —— 从 JS 生成 DOM，省掉重复 HTML
      · 移动菜单、滚动显现、导航高亮
    专题页只需 <script src="../_shared/topic.js"></script>，
    再写自己的内容脚本即可。
@@ -182,22 +182,110 @@
     return v;
   };
 
-  // 练习题外壳（tabs + 进度条 + 题目容器）
-  TOPIC.quizShell = function (cfg) {
-    const q = el('div');
-    q.innerHTML = `
+  // 练习题引擎：渲染分级题库 + 即时判分 + 进度条。
+  // TOPIC.renderQuiz(mountId, questions, {tabs, done})
+  // questions 元素：{lv, type:'choice'|'fill', q, opts?, ans, ex}
+  TOPIC.renderQuiz = function (mountId, questions, cfg) {
+    const mount = $(mountId);
+    if (!mount) return;
+    cfg = cfg || {};
+    const tabs = cfg.tabs || [{ level: 'all', label: '全部题目' }];
+    const answered = new Map();
+    let curLv = tabs[0].level;
+
+    mount.innerHTML = `
       <div class="quiz-bar">
-        <div class="quiz-tabs" id="quizTabs">
-          ${cfg.tabs.map((t, i) => `<button data-level="${t.level}"${i === 0 ? ' class="on"' : ''}>${t.label}</button>`).join('')}
+        <div class="quiz-tabs">
+          ${tabs.map((t, i) => `<button data-level="${t.level}"${i === 0 ? ' class="on"' : ''}>${t.label}</button>`).join('')}
         </div>
         <div class="quiz-progress">
-          <span id="quizCount">已答 0 / ${cfg.total}</span>
-          <div class="qbar"><div class="qbar-fill" id="quizBarFill"></div></div>
-          <span id="quizScore">✓ 0</span>
+          <span class="rq-count">已答 0 / ${questions.length}</span>
+          <div class="qbar"><div class="qbar-fill"></div></div>
+          <span class="rq-score">✓ 0</span>
         </div>
       </div>
-      <div id="quizList"></div>`;
-    return q;
+      <div class="rq-list"></div>
+      ${cfg.done ? `<div class="keypoint rq-done" style="display:none">${cfg.done}</div>` : ''}`;
+
+    const listEl = mount.querySelector('.rq-list');
+    const tabBtns = mount.querySelectorAll('.quiz-tabs button');
+
+    function progress() {
+      const done = answered.size, right = [...answered.values()].filter(Boolean).length;
+      mount.querySelector('.rq-count').textContent = `已答 ${done} / ${questions.length}`;
+      mount.querySelector('.rq-score').textContent = `✓ ${right}`;
+      mount.querySelector('.qbar-fill').style.width = (done / questions.length * 100) + '%';
+      const doneEl = mount.querySelector('.rq-done');
+      if (doneEl) doneEl.style.display = done === questions.length ? '' : 'none';
+    }
+
+    function render() {
+      listEl.innerHTML = '';
+      questions.forEach((q, qi) => {
+        if (q.lv !== curLv) return;
+        const card = el('div', 'qcard');
+        card.innerHTML = `
+          <div class="qhead">
+            <span class="qno">Q${qi + 1}</span>
+            <span class="qtag">${q.type === 'choice' ? '选择题' : '填空题'}</span>
+          </div>
+          <div class="qtext">${q.q}</div>`;
+        const ex = el('div', 'qexplain');
+
+        if (q.type === 'choice') {
+          const box = el('div', 'qopts');
+          const OL = 'ABCD';
+          q.opts.forEach((op, oi) => {
+            const b = el('button', 'qopt', `<span class="ol">${OL[oi]}</span><span>${op}</span>`);
+            b.addEventListener('click', () => {
+              if (answered.has(qi)) return;
+              const ok = oi === q.ans;
+              answered.set(qi, ok);
+              box.querySelectorAll('.qopt').forEach((bb, bj) => {
+                bb.disabled = true;
+                if (bj === q.ans) bb.classList.add('right');
+                else if (bj === oi) bb.classList.add('wrong');
+              });
+              ex.innerHTML = `<span class="verdict ${ok ? 'ok' : 'no'}">${ok ? '✓ 回答正确' : '✗ 回答错误'}</span>${q.ex}`;
+              ex.classList.add('show');
+              progress();
+            });
+            box.appendChild(b);
+          });
+          card.appendChild(box);
+        } else {
+          const box = el('div', 'qfill');
+          box.innerHTML = `<input type="number" placeholder="填入答案"><button class="btn primary">提交</button>`;
+          const input = box.querySelector('input'), btn = box.querySelector('button');
+          const judge = () => {
+            if (answered.has(qi)) return;
+            const v = input.value.trim();
+            if (v === '') { input.focus(); return; }
+            const ok = Number(v) === Number(q.ans);
+            answered.set(qi, ok);
+            input.disabled = true; btn.disabled = true;
+            input.style.borderColor = ok ? '#16a34a' : '#f87171';
+            ex.innerHTML = `<span class="verdict ${ok ? 'ok' : 'no'}">${ok ? '✓ 回答正确' : '✗ 正确答案：' + q.ans}</span>${q.ex}`;
+            ex.classList.add('show');
+            progress();
+          };
+          btn.addEventListener('click', judge);
+          input.addEventListener('keydown', e => { if (e.key === 'Enter') judge(); });
+          card.appendChild(box);
+        }
+
+        card.appendChild(ex);
+        listEl.appendChild(card);
+      });
+      progress();
+    }
+
+    tabBtns.forEach(b => b.addEventListener('click', () => {
+      tabBtns.forEach(x => x.classList.toggle('on', x === b));
+      curLv = b.dataset.level;
+      render();
+    }));
+    render();
   };
 
   // 页脚

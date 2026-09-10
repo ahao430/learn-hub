@@ -13,33 +13,67 @@ const TOPICS = [
     desc: '什么是同余、基本性质、弃九法、幂与循环、费马小定理、中国剩余定理，配 6 个交互动画、1 个运算验证器和 16 道分级练习。',
     url: 'topics/congruence/index.html',
     icon: '🕐',
-    // 卡片配色（顶部彩条 / 图标底色）
     c1: '#4f46e5', c2: '#0ea5e9',
     c1s: '#eef2ff', c2s: '#e0f2fe', cline: '#c7d2fe',
     tags: ['数论', '入门 → 进阶', '6 章', '6 动画', '16 题'],
     date: '2026-09-10 上架'
-  }
-  /* 新专题在这里追加，例如：
-  , {
+  },
+  {
     id: 'primes',
     title: '质数与算术基本定理',
     sub: '整数世界的原子',
-    desc: '……',
+    desc: '什么是质数、埃拉托斯特尼筛法、分解唯一性、质数无穷多的欧几里得证明，配筛法、分解树、质数检测器 3 个交互动画。',
     url: 'topics/primes/index.html',
     icon: '🧱',
-    c1: '#0d9488', c2: '#22c55e', c1s: '#f0fdfa', c2s: '#f0fdf4', cline: '#99f6e4',
-    tags: ['数论', '入门', 'x 章', 'x 动画', 'x 题'],
-    date: '2026-xx-xx 上架'
+    c1: '#0d9488', c2: '#14b8a6',
+    c1s: '#f0fdfa', c2s: '#ccfbf1', cline: '#99f6e4',
+    tags: ['数论', '入门', '5 章', '3 动画', '8 题'],
+    date: '2026-09-10 上架'
+  },
+  {
+    id: 'combinatorics',
+    title: '组合计数',
+    sub: '数清所有的可能',
+    desc: '加法与乘法原理、排列、组合、鸽笼原理、杨辉三角，配穿搭生成器、排列树、鸽笼演示、杨辉三角生长 4 个交互动画。',
+    url: 'topics/combinatorics/index.html',
+    icon: '🎲',
+    c1: '#7c3aed', c2: '#a855f7',
+    c1s: '#f5f3ff', c2s: '#ede9fe', cline: '#ddd6fe',
+    tags: ['组合数学', '入门', '5 章', '4 动画', '8 题'],
+    date: '2026-09-10 上架'
+  },
+  {
+    id: 'induction',
+    title: '数学归纳法',
+    sub: '多米诺骨牌的艺术',
+    desc: '奠基与递推、求和公式的完整证明、缺奠基与"所有马同色"两大陷阱，配多米诺推倒与求和点阵 2 个交互动画。',
+    url: 'topics/induction/index.html',
+    icon: '🪜',
+    c1: '#2563eb', c2: '#3b82f6',
+    c1s: '#eff6ff', c2s: '#dbeafe', cline: '#bfdbfe',
+    tags: ['证明方法', '入门', '5 章', '2 动画', '6 题'],
+    date: '2026-09-10 上架'
+  },
+  {
+    id: 'graphs',
+    title: '图论入门',
+    sub: '从七桥问题开始',
+    desc: '顶点与边、握手定理、哥尼斯堡七桥、欧拉回路与一笔画判定，配可交互的图实验室（点两顶点加删边）与一笔画演示动画。',
+    url: 'topics/graphs/index.html',
+    icon: '🕸️',
+    c1: '#db2777', c2: '#ec4899',
+    c1s: '#fdf2f8', c2s: '#fce7f3', cline: '#f9a8d4',
+    tags: ['图论', '入门', '5 章', '2 动画', '8 题'],
+    date: '2026-09-10 上架'
   }
-  */
 ];
 
 /* ───────── 规划中的占位（未上架） ───────── */
 const PLANNED = [
-  { icon: '🧱', title: '质数与算术基本定理', desc: '分解唯一性 · 筛法 · 无穷性证明' },
-  { icon: '🎲', title: '组合计数', desc: '加乘原理 · 鸽笼原理 · 排列组合' },
-  { icon: '🪜', title: '数学归纳法', desc: '多米诺骨牌的艺术' },
-  { icon: '🕸️', title: '图论入门', desc: '哥尼斯堡七桥 · 欧拉回路' }
+  { icon: '⚙️', title: '力学入门', desc: '牛顿定律 · 动量与能量' },
+  { icon: '⚡', title: '电与磁', desc: '场 · 感应 · 电路' },
+  { icon: '⚗️', title: '化学反应', desc: '摩尔 · 守恒 · 平衡' },
+  { icon: '🌈', title: '波动与光', desc: '干涉 · 衍射 · 光谱' }
 ];
 
 /* ───────── 渲染 ───────── */
