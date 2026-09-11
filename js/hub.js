@@ -8,6 +8,7 @@
 const TOPICS = [
   {
     id: 'congruence',
+    subject: '数学',
     title: '同余定理',
     sub: '从时钟到密码学',
     desc: '什么是同余、基本性质、弃九法、幂与循环、费马小定理、中国剩余定理，配 6 个交互动画、1 个运算验证器和 16 道分级练习。',
@@ -20,6 +21,7 @@ const TOPICS = [
   },
   {
     id: 'primes',
+    subject: '数学',
     title: '质数与算术基本定理',
     sub: '整数世界的原子',
     desc: '什么是质数、埃拉托斯特尼筛法、分解唯一性、质数无穷多的欧几里得证明，配筛法、分解树、质数检测器 3 个交互动画。',
@@ -32,6 +34,7 @@ const TOPICS = [
   },
   {
     id: 'combinatorics',
+    subject: '数学',
     title: '组合计数',
     sub: '数清所有的可能',
     desc: '加法与乘法原理、排列、组合、鸽笼原理、杨辉三角，配穿搭生成器、排列树、鸽笼演示、杨辉三角生长 4 个交互动画。',
@@ -44,6 +47,7 @@ const TOPICS = [
   },
   {
     id: 'induction',
+    subject: '数学',
     title: '数学归纳法',
     sub: '多米诺骨牌的艺术',
     desc: '奠基与递推、求和公式的完整证明、缺奠基与"所有马同色"两大陷阱，配多米诺推倒与求和点阵 2 个交互动画。',
@@ -56,6 +60,7 @@ const TOPICS = [
   },
   {
     id: 'graphs',
+    subject: '数学',
     title: '图论入门',
     sub: '从七桥问题开始',
     desc: '顶点与边、握手定理、哥尼斯堡七桥、欧拉回路与一笔画判定，配可交互的图实验室（点两顶点加删边）与一笔画演示动画。',
@@ -68,6 +73,7 @@ const TOPICS = [
   },
   {
     id: 'mechanics',
+    subject: '物理',
     title: '力学入门',
     sub: '描述运动与改变运动',
     desc: '运动学三量、牛顿三定律、自由落体，配频闪照片模拟（看见加速度）、双车 F=ma 实验、冰面分离动量演示。',
@@ -80,6 +86,7 @@ const TOPICS = [
   },
   {
     id: 'chemistry',
+    subject: '化学',
     title: '化学反应',
     sub: '摩尔、配平与平衡',
     desc: '摩尔计算、质量守恒与方程式配平、碰撞理论与活化能、化学平衡与勒夏特列原理，配互动配平器、碰撞模拟、平衡演示。',
@@ -108,16 +115,29 @@ const PLANNED = [
 
   let sumChapters = 0, sumAnims = 0, sumQuiz = 0;
 
+  /* 学科配色（卡片右上角徽章 + 筛选 tab） */
+  const SUBJECT_STYLE = {
+    '数学': { color: '#4f46e5', icon: '➗' },
+    '物理': { color: '#ea580c', icon: '⚙️' },
+    '化学': { color: '#0891b2', icon: '⚗️' },
+    '生物': { color: '#16a34a', icon: '🧬' }
+  };
+  const subStyle = s => SUBJECT_STYLE[s] || { color: '#64748b', icon: '📚' };
+
+  const cards = [];
   TOPICS.forEach(t => {
     const a = document.createElement('a');
     a.className = 'topic-card';
+    a.dataset.subject = t.subject || '其他';
     a.href = t.url;
     a.style.setProperty('--tc1', t.c1);
     a.style.setProperty('--tc2', t.c2);
     a.style.setProperty('--tc1-soft', t.c1s);
     a.style.setProperty('--tc2-soft', t.c2s);
     a.style.setProperty('--tc-line', t.cline);
+    a.style.setProperty('--tc-sub', subStyle(t.subject).color);
     a.innerHTML = `
+      <span class="tc-subject">${t.subject || '专题'}</span>
       <div class="tc-top">
         <div class="tc-icon">${t.icon}</div>
         <div class="tc-title-wrap">
@@ -132,13 +152,35 @@ const PLANNED = [
         <span class="tc-enter">进入学习</span>
       </div>`;
     shelf.appendChild(a);
+    cards.push(a);
 
     // 从标签里提取统计（约定：标签包含 "N 章 / N 动画 / N 题"）
     const pick = re => { const m = t.tags.find(x => re.test(x)); return m ? Number(m.match(/\d+/)[0]) : 0; };
     sumChapters += pick(/章/);
-    sumAnims += pick(/动画/);
+    sumAnims += pick(/动画|交互/);
     sumQuiz += pick(/题/);
   });
+
+  /* 学科筛选 tab：全部 + 各学科（带数量，按登记顺序） */
+  (function () {
+    const tabsEl = document.getElementById('shelfTabs');
+    if (!tabsEl) return;
+    const subjects = [...new Set(TOPICS.map(t => t.subject).filter(Boolean))];
+    const groups = [['全部', null]].concat(subjects.map(s => [s, s]));
+    groups.forEach(([label, key], i) => {
+      const b = document.createElement('button');
+      const n = key ? TOPICS.filter(t => t.subject === key).length : TOPICS.length;
+      b.innerHTML = `${key ? subStyle(key).icon + ' ' : '📚 '}${label} · ${n}`;
+      if (i === 0) b.classList.add('on');
+      b.addEventListener('click', () => {
+        tabsEl.querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+        cards.forEach(c => {
+          c.style.display = (!key || c.dataset.subject === key) ? '' : 'none';
+        });
+      });
+      tabsEl.appendChild(b);
+    });
+  })();
 
   PLANNED.forEach(p => {
     const d = document.createElement('div');
