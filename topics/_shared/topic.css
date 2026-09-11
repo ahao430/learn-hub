@@ -286,6 +286,15 @@ canvas { display: block; border-radius: 10px; background: #fbfcfe; border: 1px s
 }
 .legend-item i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
 
+/* 可视化旁白框（各专题动画下方的解说文字） */
+.viz-narr {
+  margin-top: 12px; min-height: 46px; font-size: 14.5px; line-height: 1.8;
+  background: var(--accent-soft);
+  border: 1px dashed color-mix(in srgb, var(--accent) 35%, white);
+  border-radius: 10px; padding: 10px 16px;
+  color: color-mix(in srgb, var(--accent) 55%, #0f172a);
+}
+
 /* ───────── 练习题 ───────── */
 .quiz-bar {
   display: flex; flex-wrap: wrap; gap: 14px; align-items: center;

@@ -65,15 +65,39 @@ const TOPICS = [
     c1s: '#fdf2f8', c2s: '#fce7f3', cline: '#f9a8d4',
     tags: ['图论', '入门', '5 章', '2 动画', '8 题'],
     date: '2026-09-10 上架'
+  },
+  {
+    id: 'mechanics',
+    title: '力学入门',
+    sub: '描述运动与改变运动',
+    desc: '运动学三量、牛顿三定律、自由落体，配频闪照片模拟（看见加速度）、双车 F=ma 实验、冰面分离动量演示。',
+    url: 'topics/mechanics/index.html',
+    icon: '⚙️',
+    c1: '#ea580c', c2: '#f97316',
+    c1s: '#fff7ed', c2s: '#ffedd5', cline: '#fed7aa',
+    tags: ['物理 · 力学', '入门', '5 章', '3 动画', '8 题'],
+    date: '2026-09-11 上架'
+  },
+  {
+    id: 'chemistry',
+    title: '化学反应',
+    sub: '摩尔、配平与平衡',
+    desc: '摩尔计算、质量守恒与方程式配平、碰撞理论与活化能、化学平衡与勒夏特列原理，配互动配平器、碰撞模拟、平衡演示。',
+    url: 'topics/chemistry/index.html',
+    icon: '⚗️',
+    c1: '#0891b2', c2: '#06b6d4',
+    c1s: '#ecfeff', c2s: '#cffafe', cline: '#a5f3fc',
+    tags: ['化学 · 反应原理', '入门', '5 章', '4 交互', '8 题'],
+    date: '2026-09-11 上架'
   }
 ];
 
 /* ───────── 规划中的占位（未上架） ───────── */
 const PLANNED = [
-  { icon: '⚙️', title: '力学入门', desc: '牛顿定律 · 动量与能量' },
   { icon: '⚡', title: '电与磁', desc: '场 · 感应 · 电路' },
-  { icon: '⚗️', title: '化学反应', desc: '摩尔 · 守恒 · 平衡' },
-  { icon: '🌈', title: '波动与光', desc: '干涉 · 衍射 · 光谱' }
+  { icon: '🌈', title: '波动与光', desc: '干涉 · 衍射 · 光谱' },
+  { icon: '🎯', title: '概率入门', desc: '随机 · 期望 · 大数定律' },
+  { icon: '∫', title: '微积分初步', desc: '极限 · 导数 · 面积' }
 ];
 
 /* ───────── 渲染 ───────── */

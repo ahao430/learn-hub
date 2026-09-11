@@ -1,0 +1,49 @@
+/* ═══════════ chemistry/css/style.css · 化学反应特有样式 ═══════════ */
+
+/* ───────── 摩尔计算器（沿用 calc-row 视觉） ───────── */
+.calc-out { display: grid; gap: 8px; }
+.calc-row {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  background: #f8fafc; border: 1px solid var(--line); border-radius: 10px;
+  padding: 9px 16px; font-size: 14.5px; opacity: 0; animation: fadein .5s forwards;
+}
+.calc-row .f { font-family: Georgia, serif; color: var(--ink); }
+.calc-row .v { font-family: Georgia, serif; font-weight: 700; color: var(--accent); font-size: 16.5px; }
+
+/* ───────── 配平器 ───────── */
+.bal-eq {
+  display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px;
+  background: #f8fafc; border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 12px; font-size: 17px;
+}
+.bal-plus, .bal-arrow { color: #64748b; font-size: 18px; margin: 0 4px; }
+.bal-arrow { color: #0891b2; font-weight: 800; }
+.bal-term { display: inline-flex; align-items: center; gap: 4px; }
+.bal-coef {
+  min-width: 22px; text-align: center; font-family: Georgia, serif; font-size: 21px;
+  color: #0891b2; font-weight: 700;
+}
+.bal-name { font-size: 17px; margin-left: 2px; }
+.bal-btn {
+  width: 24px; height: 24px; border-radius: 7px; border: 1px solid #cbd5e1;
+  background: #fff; cursor: pointer; font-size: 14px; color: #475569; line-height: 1;
+}
+.bal-btn:hover { background: #ecfeff; border-color: #0891b2; }
+
+.bal-atoms { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 12px; }
+.bal-atom { background: #fff; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
+.bal-atom.ok { border-color: #86efac; background: #f0fdf4; }
+.ba-head { font-size: 13.5px; color: #334155; margin-bottom: 6px; }
+.ba-head b { color: #0f172a; }
+.bal-atom.ok .ba-head { color: #15803d; }
+.ba-bar { display: flex; height: 8px; border-radius: 99px; overflow: hidden; background: #f1f5f9; }
+.ba-bar .l { background: #38bdf8; }
+.ba-bar .r { background: #fdba74; }
+
+/* ───────── 配平结论 ───────── */
+.nl-result {
+  font-family: Georgia, serif; font-size: 19px; text-align: center; padding: 10px;
+  border-radius: 12px; margin-top: 12px; opacity: 0; transition: opacity .5s;
+}
+.nl-result.on { opacity: 1; }
+.nl-result.ok { background: #f0fdf4; border: 2px solid #86efac; color: #15803d; }
